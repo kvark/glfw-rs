@@ -28,32 +28,70 @@
         </ul>
       </header>
       <section>
-        <h3>Welcome to GitHub Pages.</h3>
+        <h1>glfw-rs</h1>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<p><em>Note: these bindings are currently in development and may be incomplete, out of date or error-prone. Please let me know if you have any problems and I'll do my best to resolve them. :)</em></p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+<p>GLFW3 bindings for Rust. Based on alegalle's <a href="https://github.com/alegalle/rust_glfw">rust_glfw</a> bindings but heavily modified to work with the latest development versions of <a href="https://github.com/elmindreda/glfw">GLFW</a> and <a href="https://github.com/mozilla/rust">Rust</a>.</p>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<h2>What is GLFW?</h2>
 
-<h3>Designer Templates</h3>
+<p>From <a href="http://www.glfw.org/">glfw.org</a>:</p>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<blockquote>
+<p>GLFW is a free, Open Source, multi-platform library for opening a window, creating an OpenGL context and managing input. It is easy to integrate into existing applications and does not lay claim to the main loop.</p>
 
-<h3>Rather Drive Stick?</h3>
+<p>GLFW is written in C and has native support for Windows, Mac OS X and many Unix-like systems using the X Window System, such as Linux and FreeBSD.</p>
+</blockquote>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<h2>Instructions</h2>
 
-<h3>Authors and Contributors</h3>
+<h3>Building glfw-rs</h3>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<ol>
+<li>Make sure you have the latest version of GLFW built and installed on your system. This can be cloned from the project's <a href="https://github.com/elmindreda/glfw">Github repository</a>. Note:
 
-<h3>Support or Contact</h3>
+<ul>
+<li>The version that is available from <a href="http://www.glfw.org/">glfw.org</a> is <em>very</em> out of date, and will not work with these bindings.</li>
+<li>GLFW builds as a static library as default which doesn't work well with Rust, so you'll have to set the <code>BUILD_SHARED_LIBS</code> CMake option to true <em>before</em> you build and install it.</li>
+</ul>
+</li>
+<li>Make sure you have the latest version of Rust built and installed. As with GLFW, this can be clone from the <a href="https://github.com/mozilla/rust">github repository</a>.</li>
+<li>Clone this repository: <code>$ git clone https://github.com/bjz/glfw3-rs.git</code>, then <code>$ cd glfw-rs</code>.</li>
+<li>Run <code>$ make</code>. This will build the library to the <code>./lib</code> directory.</li>
+</ol><h3>Building the examples</h3>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+<ol>
+<li><code>$ cd glfw/examples</code></li>
+<li>
+<code>$ make</code> or for a specific example <code>$ make &lt;example name&gt;</code> (eg. <code>$ make window</code>)</li>
+<li>run an example <code>$ ./build/&lt;example name&gt;</code> (eg. <code>$ ./build/window</code>)</li>
+</ol><h3>Using glfw-rs in your own projects</h3>
+
+<p>You can add the bindings to your <code>rustc</code> command like so: <code>$ rustc &lt;filename&gt; -L &lt;path to glfw-rs directory&gt;/lib</code>.</p>
+
+<p>In order to use glfw-rs it is essential that you run your main loop from the main OS thread using <code>do task::task().sched_mode(task::PlatformThread).spawn { ... }</code>. Unlike C or C++, Rust programs automatically start on a separate thread from the main OS loop, so if you forget to do this bad things will happen! You can see an example of how to set this up in the <a href="https://github.com/bjz/glfw3-rs/blob/master/examples/window.rs">window example file</a>.</p>
+
+<h2>Todo:</h2>
+
+<ul>
+<li>Fix examples/time.rs</li>
+<li>Wrap callback functions so that the user doesn't need to deal with external functions:
+
+<ul>
+<li>glfwSetWindowRefreshCallback</li>
+<li>glfwSetScrollCallback</li>
+</ul>
+</li>
+<li>Document wrapper functions</li>
+<li>Register with Cargo Central?</li>
+<li>Into the future:
+
+<ul>
+<li>Keep up to date with the constant changes to GLFW3 and Rust</li>
+</ul>
+</li>
+</ul><p>~B☼</p>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/bjz">bjz</a></p>
